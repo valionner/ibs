@@ -5,12 +5,12 @@
 'use strict';
 
 const CONFIG = {
-  /* الاسم الرسمي ديال المنتج. إلا خليتيه خاوي، الصفحة كتبقى بالتوكن `اسم المنتج`. */
-  brandName: '',
+  /* الاسم الرسمي ديال المنتج، مكتوب كيفما هو على العلبة. */
+  brandName: 'IBS+ DETOX COLON',
 
-  /* مسار صورة المنتج الرسمية، مثال: 'assets/img/product.png'.
-     كتقدر أيضاً تحمّلها مباشرة من الصفحة (زر «حمّل صورة المنتج»). */
-  productImage: '',
+  /* صورة المنتج الرسمية. حط الملف ف assets/img/product.png (نفس العلبة، نفس اللوگو).
+     كتقدر أيضاً تحمّلها مباشرة من الصفحة (زر «حمّل صورة المنتج») باش تعاين. */
+  productImage: 'assets/img/product.png',
 
   /* رابط API ديال الطلبات (POST JSON). إلا خاوي، كنعرضو غير رسالة تأكيد محلية. */
   orderEndpoint: '',
@@ -50,32 +50,43 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
    -------------------------------------------------------------------------- */
 function applyBrandFacts() {
   if (CONFIG.brandName) {
+    const latin = /[A-Za-z]/.test(CONFIG.brandName);
     $$('[data-brand-name]').forEach((el) => {
       el.textContent = CONFIG.brandName;
       el.classList.remove('token');
       el.removeAttribute('title');
+      /* الحروف اللاتينية كتخلّي الاتجاه ينعزل باش الكلمة ما تتقلبش */
+      if (latin) el.setAttribute('dir', 'auto');
     });
     document.title = `واش النفخة والغازات كتأثر على نهارك؟ | ${CONFIG.brandName} — الدفع عند الاستلام`;
   }
-  if (CONFIG.productImage) setProductImage(CONFIG.productImage);
+  if (CONFIG.productImage) setProductImage(CONFIG.productImage, { quiet: true });
 }
 
-function setProductImage(src) {
+function setProductImage(src, { quiet = false } = {}) {
   $$('[data-stage]').forEach((stage) => {
     const img = $('[data-product-image]', stage);
     const slot = $('[data-product-slot]', stage);
     const media = $('.stage__media', stage);
     if (!img || !slot) return;
-    img.src = src;
-    img.hidden = false;
-    slot.hidden = true;
-    if (media) media.dataset.hasImage = 'true';
-    img.addEventListener('error', () => {
+
+    /* كنستنّاو التحميل قبل ما نبيّنو الصورة باش ما يبانش أيقونة مكسورة */
+    const show = () => {
+      img.hidden = false;
+      slot.hidden = true;
+      if (media) media.dataset.hasImage = 'true';
+    };
+    const fail = () => {
       img.hidden = true;
       slot.hidden = false;
       if (media) delete media.dataset.hasImage;
-      toast('ما تسنّاش تحميل الصورة — تأكد من المسار');
-    }, { once: true });
+      if (!quiet) toast('ما تسنّاش تحميل الصورة — تأكد من المسار');
+    };
+
+    img.onload = show;
+    img.onerror = fail;
+    img.src = src;
+    if (img.complete && img.naturalWidth > 0) show();   /* صورة كاينة فالكاش */
   });
 }
 

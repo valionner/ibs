@@ -227,6 +227,9 @@ p { text-wrap: pretty; }
 
 .accent { color: var(--emerald-700); }
 
+/* اسم المنتج بالحروف اللاتينية: عزل ثنائي الاتجاه باش يبان كامل (IBS+ ما توليش +IBS) */
+[data-brand-name] { unicode-bidi: isolate; }
+
 /* Pending brand fact token — replace with the official product name */
 .token {
   border-block-end: 2px dashed var(--clay);

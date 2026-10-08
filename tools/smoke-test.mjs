@@ -113,8 +113,12 @@ const honestyText = honestyNodes.map((n) => n.textContent).join(' ');
 honestyNodes.forEach((n) => n.remove());
 
 const visibleText = document.body.textContent;
-const englishWords = [...new Set((visibleText.match(/[A-Za-z]{3,}/g) || []))];
-check('ما كايناش نصوص إنجليزية ظاهرة', englishWords.length === 0);
+/* مسموح: الاسم الرسمي ديال المنتج (مكتوب بالحروف اللاتينية على العلبة)، الجملة
+   المقتبسة من الملصق (30 Capsules)، والمسار التقني ديال الملف فبلاصة الصورة. */
+const ALLOWED_LATIN = new Set(['IBS', 'DETOX', 'COLON', 'Capsules', 'assets', 'img', 'product', 'png']);
+const englishWords = [...new Set((visibleText.match(/[A-Za-z]{3,}/g) || []))]
+  .filter((w) => !ALLOWED_LATIN.has(w));
+check('ما كايناش نصوص إنجليزية دخيلة (غير الاسم الرسمي والمسار)', englishWords.length === 0);
 if (englishWords.length) console.error('   →', englishWords.join(', '));
 const banned = [
   '100% علاج طبيعي', 'بدون أعراض جانبية', 'علاج نهائي', 'مضمون 100',
@@ -123,6 +127,13 @@ const banned = [
 banned.forEach((phrase) => check(`ما كايناش عبارة محظورة: «${phrase}»`, !visibleText.includes(phrase)));
 check('كاين تنبيه أن المنتج ماشي دواء', visibleText.includes('مكمل غذائي') && visibleText.includes('ماشي بديل'));
 check('كاين النفي ديال العبارات الممنوعة فبلوك الصدق', honestyText.includes('100% علاج طبيعي'));
+
+console.log('\n8) اسم المنتج والصورة');
+const brand = document.querySelector('.hero__brand [data-brand-name]');
+check('الاسم الرسمي تحطّ فالصفحة', brand.textContent === 'IBS+ DETOX COLON');
+check('الاسم معزول ثنائياً (dir=auto) باش IBS+ ما تتقلبش', brand.getAttribute('dir') === 'auto');
+check('صورة المنتج مربوطة بالمسار الرسمي', html.includes('assets/img/product.png'));
+check('بلاصة الصورة كتبان ملي الملف ما كاينش', Array.from(document.querySelectorAll('[data-product-slot]')).every((s2) => s2.hidden === false));
 
 console.log(`\n${failures === 0 ? '✅ كلشي صحيح' : `❌ ${failures} فشل`}\n`);
 window.close();
