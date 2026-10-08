@@ -440,8 +440,9 @@ p { text-wrap: pretty; }
   border-radius: var(--r-xl);
   border: 1px solid var(--line);
   background:
-    radial-gradient(78% 62% at 50% 26%, rgba(27, 125, 87, .13) 0%, rgba(27, 125, 87, 0) 68%),
-    linear-gradient(180deg, #ffffff 0%, #faf8f2 52%, #f3efe5 100%);
+    radial-gradient(76% 60% at 50% 24%, rgba(27, 125, 87, .17) 0%, rgba(27, 125, 87, 0) 70%),
+    radial-gradient(120% 78% at 50% 118%, rgba(11, 51, 38, .10) 0%, rgba(11, 51, 38, 0) 62%),
+    linear-gradient(180deg, #ffffff 0%, #f9f6ef 48%, #efe9db 100%);
   padding: 20px 18px 16px;
   overflow: hidden;
   box-shadow: var(--sh-2);
@@ -462,7 +463,7 @@ p { text-wrap: pretty; }
   inset-block-end: 4px;
   height: 20px;
   border-radius: 50%;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(20, 52, 40, .3), rgba(20, 52, 40, 0) 74%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(20, 52, 40, .38), rgba(20, 52, 40, 0) 76%);
   filter: blur(4px);
   pointer-events: none;
   z-index: 0;
@@ -477,7 +478,7 @@ p { text-wrap: pretty; }
   max-height: 236px;
   max-width: 84%;
   object-fit: contain;
-  filter: drop-shadow(0 24px 24px rgba(18, 42, 32, .26)) drop-shadow(0 4px 8px rgba(18, 42, 32, .12));
+  filter: drop-shadow(0 22px 22px rgba(18, 42, 32, .24)) drop-shadow(0 3px 6px rgba(18, 42, 32, .17));
   animation: stage-in .5s cubic-bezier(.2,.8,.3,1) both;
 }
 @keyframes stage-in { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
