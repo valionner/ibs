@@ -1,0 +1,13 @@
+{
+  "name": "ibs-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "صفحة هبوط بالدارجة المغربية لمكمّل غذائي للراحة الهضمية — HTML/CSS/JS بلا مكتبات",
+  "scripts": {
+    "dev": "python3 -m http.server 8080 --bind 0.0.0.0",
+    "test": "node tools/smoke-test.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0"
+  }
+}

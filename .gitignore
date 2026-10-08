@@ -1,0 +1,13 @@
+# Dependencies (dev only — the page itself needs none)
+node_modules/
+package-lock.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
